@@ -7,31 +7,29 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-var React = require('react');
-var ReactPropTypes = React.PropTypes;
+import React from 'react';
+import autobind from 'autobind-decorator';
 
-var ENTER_KEY_CODE = 13;
+const ENTER_KEY_CODE = 13;
 
-var TodoTextInput = React.createClass({
+export default class TodoTextInput extends React.Component {
 
-  propTypes: {
-    className: ReactPropTypes.string,
-    id: ReactPropTypes.string,
-    placeholder: ReactPropTypes.string,
-    onSave: ReactPropTypes.func.isRequired,
-    value: ReactPropTypes.string
-  },
+  static propTypes = {
+    className: React.PropTypes.string,
+    id: React.PropTypes.string,
+    placeholder: React.PropTypes.string,
+    onSave: React.PropTypes.func.isRequired,
+    value: React.PropTypes.string
+  }
 
-  getInitialState: function() {
-    return {
+  constructor(props) {
+    super(props);
+    this.state = {
       value: this.props.value || ''
     };
-  },
+  }
 
-  /**
-   * @return {object}
-   */
-  render: function() /*object*/ {
+  render() /*object*/ {
     return (
       <input
         className={this.props.className}
@@ -44,37 +42,28 @@ var TodoTextInput = React.createClass({
         autoFocus={true}
       />
     );
-  },
+  }
 
-  /**
-   * Invokes the callback passed in as onSave, allowing this component to be
-   * used in different ways.
-   */
-  _save: function() {
+  @autobind
+  _save() {
     this.props.onSave(this.state.value);
     this.setState({
       value: ''
     });
-  },
+  }
 
-  /**
-   * @param {object} event
-   */
-  _onChange: function(/*object*/ event) {
+  @autobind
+  _onChange(event) {
     this.setState({
       value: event.target.value
     });
-  },
+  }
 
-  /**
-   * @param  {object} event
-   */
-  _onKeyDown: function(event) {
+  @autobind
+  _onKeyDown(event) {
     if (event.keyCode === ENTER_KEY_CODE) {
       this._save();
     }
   }
 
-});
-
-module.exports = TodoTextInput;
+}

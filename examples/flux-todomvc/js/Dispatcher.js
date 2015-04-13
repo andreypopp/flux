@@ -6,17 +6,11 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  *
- * TodoConstants
+ * AppDispatcher
+ *
+ * A singleton that operates as the central hub for application updates.
  */
 
-var keyMirror = require('keymirror');
+import {Dispatcher} from 'flux';
 
-module.exports = keyMirror({
-  TODO_CREATE: null,
-  TODO_COMPLETE: null,
-  TODO_DESTROY: null,
-  TODO_DESTROY_COMPLETED: null,
-  TODO_TOGGLE_COMPLETE_ALL: null,
-  TODO_UNDO_COMPLETE: null,
-  TODO_UPDATE_TEXT: null
-});
+export default new Dispatcher();

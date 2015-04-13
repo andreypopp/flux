@@ -7,9 +7,8 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-var React = require('react');
-
-var TodoApp = require('./components/TodoApp.react');
+import React from 'react';
+import TodoApp from './TodoApp.react';
 
 React.render(
   <TodoApp />,

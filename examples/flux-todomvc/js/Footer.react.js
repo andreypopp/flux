@@ -7,40 +7,32 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-var React = require('react');
-var ReactPropTypes = React.PropTypes;
-var TodoActions = require('../actions/TodoActions');
+import React from 'react';
+import autobind from 'autobind-decorator';
+import * as Actions from './Actions';
 
-var Footer = React.createClass({
+export default class Footer extends React.Component {
 
-  propTypes: {
-    allTodos: ReactPropTypes.object.isRequired
-  },
+  static propTypes = {
+    allTodos: React.PropTypes.object.isRequired
+  }
 
-  /**
-   * @return {object}
-   */
-  render: function() {
-    var allTodos = this.props.allTodos;
-    var total = Object.keys(allTodos).length;
+  render() {
+    let allTodos = this.props.allTodos;
+    let keys = Object.keys(allTodos);
+    let total = keys.length;
+    let completed = keys.filter(key => allTodos[key].complete).length;
 
     if (total === 0) {
       return null;
     }
 
-    var completed = 0;
-    for (var key in allTodos) {
-      if (allTodos[key].complete) {
-        completed++;
-      }
-    }
-
-    var itemsLeft = total - completed;
-    var itemsLeftPhrase = itemsLeft === 1 ? ' item ' : ' items ';
+    let itemsLeft = total - completed;
+    let itemsLeftPhrase = itemsLeft === 1 ? ' item ' : ' items ';
     itemsLeftPhrase += 'left';
 
     // Undefined and thus not rendered if no completed items are left.
-    var clearCompletedButton;
+    let clearCompletedButton;
     if (completed) {
       clearCompletedButton =
         <button
@@ -61,15 +53,11 @@ var Footer = React.createClass({
         {clearCompletedButton}
       </footer>
     );
-  },
-
-  /**
-   * Event handler to delete all completed TODOs
-   */
-  _onClearCompletedClick: function() {
-    TodoActions.destroyCompleted();
   }
 
-});
+  @autobind
+  _onClearCompletedClick() {
+    Actions.destroyCompleted();
+  }
 
-module.exports = Footer;
+}

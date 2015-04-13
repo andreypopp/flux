@@ -7,29 +7,24 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-var React = require('react');
-var ReactPropTypes = React.PropTypes;
-var TodoActions = require('../actions/TodoActions');
-var TodoTextInput = require('./TodoTextInput.react');
+import React from 'react';
+import autobind from 'autobind-decorator';
+import * as Actions from './Actions';
+import TodoTextInput from './TodoTextInput.react';
+import cx from 'react/lib/cx';
 
-var cx = require('react/lib/cx');
+export default class TodoItem extends React.Component {
 
-var TodoItem = React.createClass({
+  static propTypes = {
+   todo: React.PropTypes.object.isRequired
+  }
 
-  propTypes: {
-   todo: ReactPropTypes.object.isRequired
-  },
+  constructor(props) {
+    super(props);
+    this.state = {isEditing: false};
+  }
 
-  getInitialState: function() {
-    return {
-      isEditing: false
-    };
-  },
-
-  /**
-   * @return {object}
-   */
-  render: function() {
+  render() {
     var todo = this.props.todo;
 
     var input;
@@ -69,31 +64,27 @@ var TodoItem = React.createClass({
         {input}
       </li>
     );
-  },
-
-  _onToggleComplete: function() {
-    TodoActions.toggleComplete(this.props.todo);
-  },
-
-  _onDoubleClick: function() {
-    this.setState({isEditing: true});
-  },
-
-  /**
-   * Event handler called within TodoTextInput.
-   * Defining this here allows TodoTextInput to be used in multiple places
-   * in different ways.
-   * @param  {string} text
-   */
-  _onSave: function(text) {
-    TodoActions.updateText(this.props.todo.id, text);
-    this.setState({isEditing: false});
-  },
-
-  _onDestroyClick: function() {
-    TodoActions.destroy(this.props.todo.id);
   }
 
-});
+  @autobind
+  _onToggleComplete() {
+    Actions.toggleComplete(this.props.todo);
+  }
 
-module.exports = TodoItem;
+  @autobind
+  _onDoubleClick() {
+    this.setState({isEditing: true});
+  }
+
+  @autobind
+  _onSave(text) {
+    Actions.updateText(this.props.todo.id, text);
+    this.setState({isEditing: false});
+  }
+
+  @autobind
+  _onDestroyClick() {
+    Actions.destroy(this.props.todo.id);
+  }
+
+}
